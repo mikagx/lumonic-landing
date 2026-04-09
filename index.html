@@ -7,1156 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-
-:root {
-  --bg: #FAFAF6;
-  --bg-card: #fff;
-  --bg-elevated: #F0EFE9;
-  --text: #1a1a1a;
-  --text-soft: rgba(26, 26, 26, 0.5);
-  --text-muted: rgba(26, 26, 26, 0.35);
-  --border: rgba(26, 26, 26, 0.06);
-  --border-strong: rgba(26, 26, 26, 0.1);
-  --hero-dark: #1c1b18;
-  --hero-dark-border: rgba(255,255,255,0.06);
-  --nav-bg: rgba(250, 250, 246, 0.85);
-  --logo-filter: none;
-  --logo-opacity: 1;
-  --trust-logo-filter: brightness(0) invert(1);
-  --trust-logo-opacity: 0.45;
-  --trust-label: rgba(255,255,255,0.3);
-}
-
-[data-theme="dark"] {
-  --bg: #111110;
-  --bg-card: #1a1918;
-  --bg-elevated: #1e1d1b;
-  --text: #e8e6e1;
-  --text-soft: rgba(232, 230, 225, 0.55);
-  --text-muted: rgba(232, 230, 225, 0.3);
-  --border: rgba(255, 255, 255, 0.06);
-  --border-strong: rgba(255, 255, 255, 0.1);
-  --hero-dark: #0a0a09;
-  --hero-dark-border: rgba(255,255,255,0.08);
-  --nav-bg: rgba(17, 17, 16, 0.85);
-  --logo-filter: brightness(0) invert(1);
-  --logo-opacity: 0.85;
-  --trust-logo-filter: brightness(0) invert(1);
-  --trust-logo-opacity: 0.4;
-  --trust-label: rgba(255,255,255,0.25);
-}
-
-body {
-  font-family: 'Instrument Sans', sans-serif;
-  color: var(--text);
-  background: var(--bg);
-  line-height: 1.65;
-  font-size: 16px;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  transition: background 0.3s ease, color 0.3s ease;
-}
-
-h1, h2, h3 {
-  font-family: 'Office Times Round', Georgia, 'Times New Roman', serif;
-  font-weight: 400;
-  line-height: 1.06;
-  letter-spacing: -0.035em;
-}
-
-a { text-decoration: none; color: inherit; }
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 40px;
-}
-
-/* ── Buttons ── */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 16px 32px;
-  border-radius: 2px;
-  font-family: 'Instrument Sans', sans-serif;
-  font-size: 15px;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  cursor: pointer;
-  transition: all 0.15s ease;
-  border: none;
-}
-
-.btn-primary {
-  background: var(--text);
-  color: var(--bg);
-}
-.btn-primary:hover {
-  opacity: 0.85;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
-}
-
-.btn-outline {
-  background: transparent;
-  color: var(--text);
-  border: 1px solid var(--border-strong);
-}
-.btn-outline:hover {
-  background: var(--border);
-  border-color: var(--text-muted);
-}
-
-/* ── Section Label ── */
-.section-label {
-  display: inline-block;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-bottom: 16px;
-}
-
-/* ── Animations ── */
-.reveal {
-  opacity: 0;
-  transform: translateY(28px);
-  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.reveal.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.reveal-child {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.reveal-child.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* ── NAV ── */
-.nav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-  height: 72px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 40px;
-  transition: border-color 0.3s ease;
-  border-bottom: 1px solid transparent;
-}
-.nav-backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 72px;
-  z-index: 999;
-  transition: background 0.3s ease, border-color 0.3s ease;
-  border-bottom: 1px solid transparent;
-}
-.nav-backdrop.scrolled {
-  background: var(--nav-bg);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom-color: var(--border);
-}
-.nav.scrolled {
-  border-bottom-color: var(--border);
-}
-
-.nav-left {
-  display: flex;
-  align-items: center;
-  flex-shrink: 0;
-}
-
-.nav-links {
-  display: flex;
-  gap: 32px;
-  list-style: none;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-}
-.nav-links li {
-  position: relative;
-}
-.nav-links a,
-.nav-links > li > span {
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--text-soft);
-  transition: color 0.2s;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-}
-.nav-links a:hover,
-.nav-links > li > span:hover { color: var(--text); }
-
-/* Dropdown chevron */
-.nav-chevron {
-  width: 10px;
-  height: 10px;
-  transition: transform 0.2s;
-}
-
-/* Dropdown panel */
-.nav-dropdown {
-  position: absolute;
-  top: 100%;
-  left: -16px;
-  padding-top: 12px;
-  opacity: 0;
-  transform: translateY(-4px);
-  pointer-events: none;
-  transition: opacity 0.2s ease, transform 0.2s ease;
-  z-index: 100;
-}
-.nav-dropdown-inner {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 2px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-  min-width: 200px;
-  padding: 8px 0;
-}
-.nav-links li:hover .nav-dropdown {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
-}
-.nav-dropdown a {
-  display: block;
-  padding: 10px 20px;
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--text-soft);
-}
-.nav-dropdown a:hover {
-  background: var(--border);
-  color: var(--text);
-}
-.nav-dropdown-desc {
-  font-size: 12px;
-  font-weight: 400;
-  color: var(--text-muted);
-  margin-top: 2px;
-}
-
-.nav-right {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-.nav-right .login-link {
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--text-soft);
-  transition: color 0.2s;
-}
-.nav-right .login-link:hover { color: var(--text); }
-.nav-right .btn { padding: 10px 22px; font-size: 14px; }
-
-/* Theme switcher (footer) */
-.theme-switcher {
-  display: inline-flex;
-  background: var(--bg-elevated);
-  border-radius: 2px;
-  padding: 3px;
-  gap: 2px;
-}
-.theme-switcher button {
-  padding: 6px 8px;
-  background: transparent;
-  border: none;
-  border-radius: 2px;
-  cursor: pointer;
-  transition: color 0.15s, background 0.15s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #888;
-}
-.theme-switcher button:hover { color: #555; }
-.theme-switcher button.active {
-  background: var(--bg-card);
-  color: #1a1a1a;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-}
-[data-theme="dark"] .theme-switcher button { color: #777; }
-[data-theme="dark"] .theme-switcher button:hover { color: #aaa; }
-[data-theme="dark"] .theme-switcher button.active {
-  color: #e8e6e1;
-}
-.theme-switcher button svg {
-  width: 16px;
-  height: 16px;
-  display: block;
-}
-
-/* ── HERO ── */
-.hero {
-  padding: 120px 0 0;
-}
-
-.hero-split {
-  display: grid;
-  grid-template-columns: 1.1fr 1fr;
-  gap: 56px;
-  align-items: start;
-  margin-bottom: 56px;
-}
-
-.hero-left h1 {
-  font-size: 58px;
-  max-width: 520px;
-  margin: 0;
-  line-height: 1.05;
-  letter-spacing: -0.035em;
-}
-.hero-left h1 em {
-  font-style: italic;
-  font-weight: 300;
-}
-
-.hero-right {
-  padding-top: 8px;
-}
-
-.hero-sub {
-  font-size: 17px;
-  color: var(--text-soft);
-  max-width: 420px;
-  margin: 0 0 32px;
-  line-height: 1.7;
-}
-
-.hero-buttons {
-  display: flex;
-  gap: 14px;
-}
-
-/* ── Hero Visual Block ── */
-.hero-visual-wrap {
-  background: var(--hero-dark);
-  padding: 64px 0 0;
-}
-
-.hero-browser {
-  max-width: 960px;
-  margin: 0 auto;
-  background: var(--bg-card);
-  border: 1px solid var(--hero-dark-border);
-  border-radius: 2px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.12), 0 24px 64px rgba(0,0,0,0.2);
-  overflow: hidden;
-}
-
-.browser-toolbar {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 14px 18px;
-  background: var(--border);
-  border-bottom: 1px solid var(--border);
-}
-.browser-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-}
-.browser-title {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  color: var(--text-muted);
-  margin-left: 8px;
-  letter-spacing: 0.02em;
-}
-
-.browser-content {
-  display: grid;
-  grid-template-columns: 1.1fr 1fr;
-  min-height: 360px;
-}
-
-/* Left pane: table */
-.browser-left {
-  border-right: 1px solid var(--border);
-}
-.browser-pane-header {
-  padding: 14px 20px 10px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.browser-pane-title {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  font-weight: 500;
-  color: var(--text-muted);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-.browser-pane-badge {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  padding: 3px 8px;
-  background: var(--border);
-  color: var(--text-muted);
-  border-radius: 2px;
-}
-
-.browser-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 13px;
-}
-.browser-table th {
-  font-size: 10px;
-  font-family: 'JetBrains Mono', monospace;
-  font-weight: 500;
-  color: var(--text-muted);
-  text-align: left;
-  padding: 8px 20px;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  border-bottom: 1px solid var(--border);
-}
-.browser-table th:not(:first-child) { text-align: right; }
-.browser-table td {
-  padding: 10px 20px;
-  color: var(--text-soft);
-  border-bottom: 1px solid var(--border);
-}
-.browser-table td:not(:first-child) {
-  text-align: right;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
-}
-.browser-table td:first-child { font-weight: 500; color: #1a1a1a; }
-
-.browser-table tbody tr {
-  cursor: pointer;
-  transition: background 0.15s ease;
-}
-.browser-table tbody tr:hover {
-  background: var(--border);
-}
-.browser-table tbody tr.row-active {
-  background: rgba(55, 138, 221, 0.08);
-}
-.browser-table tbody tr.row-active td:first-child {
-  color: #378ADD;
-}
-
-.status-badge {
-  display: inline-block;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  padding: 2px 8px;
-  border-radius: 2px;
-  font-weight: 500;
-}
-.status-current { background: #EAF3DE; color: #3B6D11; }
-.status-watch { background: #FAEEDA; color: #854F0B; }
-.status-breach { background: rgba(226,75,74,0.08); color: #c4342d; }
-
-.table-hint {
-  padding: 12px 20px;
-  font-size: 11px;
-  color: var(--text-muted);
-  text-align: center;
-  transition: opacity 0.3s;
-}
-.table-hint.hidden { opacity: 0; }
-
-/* Right pane: AI chat */
-.browser-right {
-  background: var(--bg-elevated);
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  overflow: hidden;
-}
-
-.chat-header {
-  padding: 12px 18px;
-  border-bottom: 1px solid var(--border);
-  background: var(--bg-card);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.chat-header-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #28ca41;
-}
-.chat-header-title {
-  font-family: 'Instrument Sans', sans-serif;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--text-soft);
-}
-.chat-header-tag {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--text-muted);
-  margin-left: auto;
-}
-
-.chat-body {
-  flex: 1;
-  padding: 18px;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  transition: opacity 0.2s ease;
-}
-.chat-body.fade-out { opacity: 0; }
-
-.chat-empty {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  text-align: center;
-  color: var(--text-muted);
-  font-size: 13px;
-  gap: 8px;
-  padding: 20px;
-}
-.chat-empty-icon {
-  width: 28px;
-  height: 28px;
-  color: var(--text-muted);
-}
-
-/* Chat steps (AI thinking) */
-.chat-step {
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
-  opacity: 0;
-  transform: translateY(6px);
-  transition: opacity 0.4s cubic-bezier(0.16,1,0.3,1), transform 0.4s cubic-bezier(0.16,1,0.3,1);
-}
-.chat-step.visible { opacity: 1; transform: translateY(0); }
-
-.chat-step-action {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  color: var(--text-muted);
-  flex-shrink: 0;
-}
-.chat-step-detail {
-  font-size: 12px;
-  color: var(--text-muted);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* Chat response text */
-.chat-response {
-  font-size: 13px;
-  color: var(--text-soft);
-  line-height: 1.65;
-  opacity: 0;
-  transform: translateY(6px);
-  transition: opacity 0.4s cubic-bezier(0.16,1,0.3,1), transform 0.4s cubic-bezier(0.16,1,0.3,1);
-}
-.chat-response.visible { opacity: 1; transform: translateY(0); }
-
-/* Source doc preview card inside chat */
-.chat-source-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 2px;
-  overflow: hidden;
-  opacity: 0;
-  transform: translateY(6px);
-  transition: opacity 0.4s cubic-bezier(0.16,1,0.3,1), transform 0.4s cubic-bezier(0.16,1,0.3,1);
-}
-.chat-source-card.visible { opacity: 1; transform: translateY(0); }
-
-.chat-source-header {
-  padding: 8px 12px;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--text-muted);
-}
-.chat-source-header svg {
-  width: 12px;
-  height: 12px;
-  color: var(--text-muted);
-}
-
-.chat-source-excerpt {
-  padding: 12px;
-  font-size: 11.5px;
-  line-height: 1.75;
-  color: var(--text-muted);
-}
-.chat-source-excerpt .src-highlight {
-  color: var(--text);
-  background: rgba(133, 79, 11, 0.08);
-  border-left: 2px solid #854F0B;
-  padding: 2px 8px;
-  margin: 3px -6px;
-  display: block;
-}
-
-/* Chat input bar */
-.chat-input {
-  padding: 10px 14px;
-  border-top: 1px solid var(--border);
-  background: var(--bg-card);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.chat-input-field {
-  flex: 1;
-  font-family: 'Instrument Sans', sans-serif;
-  font-size: 12px;
-  color: var(--text-muted);
-  border: none;
-  background: transparent;
-  outline: none;
-}
-.chat-input-btn {
-  width: 24px;
-  height: 24px;
-  border-radius: 2px;
-  background: var(--text);
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: default;
-}
-.chat-input-btn svg {
-  width: 12px;
-  height: 12px;
-  color: var(--bg);
-}
-
-/* Alert bar at bottom of browser */
-.browser-alert {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 20px;
-  border-top: 1px solid var(--border);
-  background: var(--bg-card);
-  transition: opacity 0.3s ease;
-  min-height: 40px;
-}
-.alert-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  flex-shrink: 0;
-  transition: background 0.3s;
-}
-.alert-text {
-  font-size: 12px;
-  color: var(--text-muted);
-  transition: opacity 0.2s;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.alert-time {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: var(--text-muted);
-  margin-left: auto;
-  flex-shrink: 0;
-}
-
-@keyframes alert-pulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(226, 75, 74, 0.4); }
-  50% { box-shadow: 0 0 0 4px rgba(226, 75, 74, 0); }
-}
-.alert-dot.pulse { animation: alert-pulse 1.5s ease-in-out 1; }
-
-/* ── LOGO BAR ── */
-.logo-bar {
-  padding: 48px 0 0;
-}
-.logo-bar-inner {
-  display: flex;
-  align-items: center;
-  gap: 32px;
-}
-.logo-bar-label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  font-weight: 400;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.3);
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-.logo-bar-logos {
-  display: flex;
-  align-items: center;
-  gap: 0;
-  flex-wrap: wrap;
-  flex: 1;
-}
-.logo-bar-logos img {
-  height: 18px;
-  object-fit: contain;
-  padding: 12px 16px;
-  box-sizing: content-box;
-  filter: brightness(0) invert(1);
-  opacity: 0.45;
-}
-
-/* ── PROBLEM SECTION ── */
-.problem {
-  padding: 160px 0;
-}
-.problem-header {
-  text-align: center;
-  margin-bottom: 80px;
-}
-.problem-header h2 {
-  font-size: 52px;
-  max-width: 700px;
-  margin: 0 auto;
-  line-height: 1.06;
-}
-
-.problem-desk {
-  position: relative;
-  max-width: 900px;
-  margin: 0 auto 48px;
-  height: 280px;
-}
-
-.pain-card {
-  position: absolute;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 2px;
-  padding: 20px 24px;
-  font-size: 14px;
-  color: var(--text-soft);
-  line-height: 1.55;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.03), 0 4px 16px rgba(0,0,0,0.04);
-  max-width: 320px;
-  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.pain-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: #E24B4A;
-  opacity: 0.6;
-}
-
-.pain-card:nth-child(1) {
-  top: 0;
-  left: 4%;
-  transform: rotate(-2deg);
-}
-.pain-card:nth-child(2) {
-  top: 10px;
-  right: 6%;
-  transform: rotate(1.5deg);
-}
-.pain-card:nth-child(3) {
-  top: 100px;
-  left: 18%;
-  transform: rotate(0.8deg);
-}
-.pain-card:nth-child(4) {
-  top: 120px;
-  right: 12%;
-  transform: rotate(-1.2deg);
-}
-.pain-card:nth-child(5) {
-  top: 200px;
-  left: 32%;
-  transform: rotate(1deg);
-}
-
-.pain-card.settled:nth-child(1) { transform: rotate(-1deg) translateY(-4px); }
-.pain-card.settled:nth-child(2) { transform: rotate(0.8deg) translateY(-2px); }
-.pain-card.settled:nth-child(3) { transform: rotate(0.3deg) translateY(-3px); }
-.pain-card.settled:nth-child(4) { transform: rotate(-0.6deg) translateY(-2px); }
-.pain-card.settled:nth-child(5) { transform: rotate(0.5deg) translateY(-4px); }
-
-.problem-closing {
-  text-align: center;
-  font-size: 17px;
-  color: var(--text-soft);
-  font-style: italic;
-  max-width: 600px;
-  margin: 0 auto;
-  line-height: 1.7;
-}
-
-/* ── HOW IT WORKS ── */
-.how-it-works {
-  padding: 160px 0;
-}
-.how-header {
-  margin-bottom: 80px;
-}
-.how-header h2 {
-  font-size: 52px;
-  max-width: 550px;
-  line-height: 1.06;
-  margin-bottom: 20px;
-}
-.how-header p {
-  font-size: 18px;
-  color: var(--text-soft);
-  max-width: 560px;
-  line-height: 1.7;
-}
-
-.flow-pipeline {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0;
-  position: relative;
-}
-
-.flow-step {
-  padding: 32px 28px;
-  border: 1px solid var(--border);
-  border-right: none;
-  background: var(--bg-card);
-  position: relative;
-}
-.flow-step:first-child { border-radius: 2px 0 0 2px; }
-.flow-step:last-child { border-radius: 0 2px 2px 0; border-right: 1px solid var(--border); }
-
-.flow-step-number {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--text-muted);
-  margin-bottom: 16px;
-}
-.flow-step-title {
-  font-family: 'Office Times Round', Georgia, serif;
-  font-size: 22px;
-  font-weight: 400;
-  color: var(--text);
-  margin-bottom: 8px;
-  letter-spacing: -0.02em;
-}
-.flow-step-desc {
-  font-size: 14px;
-  color: var(--text-soft);
-  line-height: 1.6;
-}
-
-.flow-step-arrow {
-  position: absolute;
-  right: -8px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--text-muted);
-  z-index: 1;
-  background: var(--bg);
-  padding: 4px 0;
-  font-size: 14px;
-}
-
-/* ── FEATURES ── */
-.features {
-  padding: 160px 0;
-}
-.features-header {
-  text-align: center;
-  margin-bottom: 80px;
-}
-.features-header h2 {
-  font-size: 52px;
-  max-width: 650px;
-  margin: 0 auto;
-  line-height: 1.06;
-}
-
-.features-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-}
-
-.feat-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 2px;
-  padding: 32px;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-}
-.feat-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-}
-
-.feat-icon {
-  width: 36px;
-  height: 36px;
-  border-radius: 2px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 18px;
-}
-[data-theme="dark"] .feat-icon {
-  opacity: 0.7;
-}
-.feat-card h3 {
-  font-family: 'Instrument Sans', sans-serif;
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--text);
-  margin-bottom: 6px;
-  letter-spacing: 0;
-  line-height: 1.4;
-}
-.feat-card p {
-  font-size: 14px;
-  color: var(--text-soft);
-  line-height: 1.6;
-}
-
-.feat-card-wide {
-  grid-column: 1 / -1;
-  background: var(--bg-elevated);
-  border-color: var(--border);
-}
-.feat-card-wide-inner {
-  display: flex;
-  align-items: flex-start;
-  gap: 20px;
-}
-
-/* ── TESTIMONIALS ── */
-.testimonials {
-  padding: 160px 0;
-}
-.testimonials-header {
-  text-align: center;
-  margin-bottom: 80px;
-}
-.testimonials-header h2 {
-  font-size: 52px;
-  max-width: 500px;
-  margin: 0 auto;
-  line-height: 1.06;
-}
-
-.quotes-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 24px;
-}
-
-.quote-card {
-  padding: 36px;
-  border-top: 2px solid var(--border-strong);
-  background: transparent;
-}
-.quote-text {
-  font-size: 19px;
-  color: var(--text);
-  line-height: 1.6;
-  font-style: italic;
-  margin-bottom: 28px;
-  font-family: 'Office Times Round', Georgia, serif;
-  letter-spacing: -0.01em;
-}
-.quote-attr {
-  font-size: 13px;
-  color: var(--text-muted);
-}
-.quote-name {
-  font-weight: 600;
-  color: var(--text-soft);
-}
-
-/* ── FAQ ── */
-.faq-section {
-  padding: 160px 0;
-}
-.faq-header {
-  margin-bottom: 48px;
-}
-.faq-header h2 {
-  font-size: 40px;
-  line-height: 1.1;
-}
-
-.faq-list {
-  max-width: 720px;
-  border-top: 1px solid var(--border-strong);
-}
-.faq-item {
-  border-bottom: 1px solid var(--border-strong);
-}
-.faq-q {
-  width: 100%;
-  text-align: left;
-  background: none;
-  border: none;
-  padding: 20px 0;
-  font-family: 'Instrument Sans', sans-serif;
-  font-size: 15px;
-  font-weight: 500;
-  color: var(--text);
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-  transition: color 0.2s;
-}
-.faq-q:hover { color: var(--text-soft); }
-.faq-chevron {
-  flex-shrink: 0;
-  color: var(--text-muted);
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.faq-a {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1), padding 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  padding: 0 0;
-}
-.faq-a.open {
-  max-height: 300px;
-  padding: 0 0 20px;
-}
-.faq-a p {
-  font-size: 15px;
-  color: var(--text-soft);
-  line-height: 1.7;
-  max-width: 600px;
-}
-
-/* ── BOTTOM CTA ── */
-.bottom-cta {
-  margin: 0 40px 100px;
-  padding: 100px 60px;
-  background: var(--bg-elevated);
-  border-radius: 2px;
-  text-align: center;
-}
-.bottom-cta h2 {
-  font-size: 48px;
-  margin-bottom: 20px;
-  line-height: 1.06;
-}
-.bottom-cta-sub {
-  font-size: 17px;
-  color: var(--text-soft);
-  margin-bottom: 36px;
-  line-height: 1.7;
-}
-.bottom-cta-note {
-  font-size: 13px;
-  color: var(--text-muted);
-  margin-top: 16px;
-}
-
-/* ── FOOTER ── */
-.footer {
-  border-top: 1px solid var(--border);
-  padding: 64px 0 40px;
-}
-.footer-top {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 56px;
-}
-.footer-brand-tagline {
-  font-size: 14px;
-  color: var(--text-soft);
-  max-width: 300px;
-  line-height: 1.6;
-  margin-top: 12px;
-}
-.footer-columns {
-  display: flex;
-  gap: 72px;
-}
-.footer-col h4 {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-bottom: 16px;
-}
-.footer-col ul { list-style: none; }
-.footer-col li { margin-bottom: 10px; }
-.footer-col a {
-  font-size: 14px;
-  color: var(--text-soft);
-  transition: color 0.2s;
-}
-.footer-col a:hover { color: var(--text); }
-
-.footer-bottom {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-top: 32px;
-  border-top: 1px solid var(--border);
-}
-.footer-copy {
-  font-size: 13px;
-  color: var(--text-muted);
-}
-.footer-social a {
-  color: var(--text-muted);
-  transition: color 0.2s;
-}
-.footer-social a:hover { color: #1a1a1a; }
-</style>
+<link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 
@@ -1164,29 +15,29 @@ a { text-decoration: none; color: inherit; }
 <div class="nav-backdrop" id="navBackdrop"></div>
 <nav class="nav" id="nav">
   <div class="nav-left">
-    <a href="#"><img src="logos/Lumonic_Logo.svg" alt="Lumonic" style="height: 18px; filter: var(--logo-filter); opacity: var(--logo-opacity);"></a>
+    <a href="index.html"><img src="logos/Lumonic_Logo.svg" alt="Lumonic" style="height: 18px; filter: var(--logo-filter); opacity: var(--logo-opacity);"></a>
   </div>
   <ul class="nav-links">
     <li>
       <span>Asset Classes <svg class="nav-chevron" viewBox="0 0 10 10" fill="none"><path d="M2.5 3.75L5 6.25L7.5 3.75" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
       <div class="nav-dropdown"><div class="nav-dropdown-inner">
-        <a href="#">Private Credit</a>
-        <a href="#">Private Equity</a>
+        <a href="private-credit.html">Private Credit</a>
+        <a href="private-equity.html">Private Equity</a>
       </div></div>
     </li>
     <li>
       <span>Resources <svg class="nav-chevron" viewBox="0 0 10 10" fill="none"><path d="M2.5 3.75L5 6.25L7.5 3.75" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
       <div class="nav-dropdown"><div class="nav-dropdown-inner">
-        <a href="#">Content</a>
-        <a href="#">Events</a>
+        <a href="content.html">Content</a>
+        <a href="events.html">Events</a>
       </div></div>
     </li>
     <li>
       <span>Company <svg class="nav-chevron" viewBox="0 0 10 10" fill="none"><path d="M2.5 3.75L5 6.25L7.5 3.75" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
       <div class="nav-dropdown"><div class="nav-dropdown-inner">
-        <a href="#">About Us</a>
-        <a href="#">Contact</a>
-        <a href="#">Careers</a>
+        <a href="about.html">About Us</a>
+        <a href="contact.html">Contact</a>
+        <a href="careers.html">Careers</a>
       </div></div>
     </li>
   </ul>
@@ -1287,27 +138,27 @@ a { text-decoration: none; color: inherit; }
         <span class="alert-time" id="alertTime">Updated just now</span>
       </div>
     </div>
-
-    <!-- Trust bar -->
-    <div class="logo-bar reveal">
-      <div class="logo-bar-inner">
-        <span class="logo-bar-label">Trusted by leading investors</span>
-        <div class="logo-bar-logos">
-          <img src="logos/Hercules%20Capital.png" alt="Hercules Capital">
-          <img src="logos/Liberty%20Mutual%20Investments.svg" alt="Liberty Mutual">
-          <img src="logos/Trinity%20Capital.svg" alt="Trinity Capital">
-          <img src="logos/Runway%20Growth%20Capital.png" alt="Runway Growth">
-          <img src="logos/Plexus%20Capital.svg" alt="Plexus Capital">
-          <img src="logos/Tacora%20Capital.png" alt="Tacora Capital">
-          <img src="logos/Multiplier%20Capital.png" alt="Multiplier Capital">
-          <img src="logos/TriplePoint%20Capital.svg" alt="TriplePoint Capital">
-          <img src="logos/Catalio%20Capital%20Management.svg" alt="Catalio Capital">
-          <img src="logos/Abacus%20Finance%20Group.png" alt="Abacus Finance">
-        </div>
-      </div>
-    </div>
   </div>
 </div>
+
+<!-- Logo bar -->
+<section class="logo-bar reveal">
+  <div class="container">
+    <p class="logo-bar-label">Trusted by leading institutional investors</p>
+    <div class="logo-bar-logos">
+      <img src="logos/Hercules%20Capital.png" alt="Hercules Capital">
+      <img src="logos/Liberty%20Mutual%20Investments.svg" alt="Liberty Mutual">
+      <img src="logos/Trinity%20Capital.svg" alt="Trinity Capital">
+      <img src="logos/Runway%20Growth%20Capital.png" alt="Runway Growth">
+      <img src="logos/Plexus%20Capital.svg" alt="Plexus Capital">
+      <img src="logos/Tacora%20Capital.png" alt="Tacora Capital">
+      <img src="logos/Multiplier%20Capital.png" alt="Multiplier Capital">
+      <img src="logos/TriplePoint%20Capital.svg" alt="TriplePoint Capital">
+      <img src="logos/Catalio%20Capital%20Management.svg" alt="Catalio Capital">
+      <img src="logos/Abacus%20Finance%20Group.png" alt="Abacus Finance">
+    </div>
+  </div>
+</section>
 
 <!-- PROBLEM -->
 <section class="problem">
@@ -1335,32 +186,225 @@ a { text-decoration: none; color: inherit; }
     <div class="how-header reveal">
       <span class="section-label">How it works</span>
       <h2>What if your data was just… <em>there?</em></h2>
-      <p>Portfolio companies submit documents. Lumonic reads them, extracts the numbers, flags anomalies, and populates your dashboards — automatically. Every number traces back to the exact cell in the source file.</p>
+      <p>Portfolio companies submit documents. Lumonic reads them, extracts the numbers, flags anomalies, and populates your dashboards — automatically.</p>
     </div>
 
-    <div class="flow-pipeline reveal">
-      <div class="flow-step">
-        <div class="flow-step-number">01</div>
-        <div class="flow-step-title">Ingest</div>
-        <div class="flow-step-desc">Any format, any structure. PDFs, Excel, board decks — we handle it all.</div>
-        <span class="flow-step-arrow">→</span>
+    <div class="reveal">
+      <div class="flow-tabs" id="flowTabs">
+        <button class="flow-tab active" data-tab="ingest">Ingest</button>
+        <button class="flow-tab" data-tab="extract">Extract</button>
+        <button class="flow-tab" data-tab="review">Review</button>
+        <button class="flow-tab" data-tab="live">Live</button>
       </div>
-      <div class="flow-step">
-        <div class="flow-step-number">02</div>
-        <div class="flow-step-title">Extract</div>
-        <div class="flow-step-desc">AI reads and structures the data. Maps it to your schema automatically.</div>
-        <span class="flow-step-arrow">→</span>
-      </div>
-      <div class="flow-step">
-        <div class="flow-step-number">03</div>
-        <div class="flow-step-title">Review</div>
-        <div class="flow-step-desc">Human QA on every file. 48-hour SLA. 98–99% accuracy across 3,000+ companies.</div>
-        <span class="flow-step-arrow">→</span>
-      </div>
-      <div class="flow-step">
-        <div class="flow-step-number">04</div>
-        <div class="flow-step-title">Live</div>
-        <div class="flow-step-desc">Dashboards, alerts, full audit trail. Your team reviews, approves, moves on.</div>
+
+      <div class="flow-preview">
+        <!-- Ingest -->
+        <div class="flow-preview-panel active" data-panel="ingest">
+          <div class="mini-toolbar">
+            <span class="mini-toolbar-title">Document Inbox</span>
+            <div class="mini-toolbar-right">
+              <span class="mini-badge">12 new</span>
+            </div>
+          </div>
+          <div class="mini-body">
+            <div class="file-list">
+              <div class="file-item">
+                <div class="file-icon file-icon-pdf">PDF</div>
+                <div>
+                  <div class="file-name">Meridian_Q1_2025_financials.pdf</div>
+                  <div class="file-meta">Received Mar 28 · 2.4 MB</div>
+                </div>
+                <div class="file-status">Processed</div>
+              </div>
+              <div class="file-item">
+                <div class="file-icon file-icon-xls">XLS</div>
+                <div>
+                  <div class="file-name">Beacon_Industrial_compliance_cert.xlsx</div>
+                  <div class="file-meta">Received Mar 27 · 840 KB</div>
+                </div>
+                <div class="file-status">Processed</div>
+              </div>
+              <div class="file-item">
+                <div class="file-icon file-icon-pdf">PDF</div>
+                <div>
+                  <div class="file-name">Stratos_Capital_board_deck_Q1.pdf</div>
+                  <div class="file-meta">Received Mar 26 · 5.1 MB</div>
+                </div>
+                <div class="file-status">Processed</div>
+              </div>
+              <div class="file-item">
+                <div class="file-icon file-icon-ppt">PPT</div>
+                <div>
+                  <div class="file-name">Arcadia_Logistics_monthly_report.pptx</div>
+                  <div class="file-meta">Received Mar 25 · 3.2 MB</div>
+                </div>
+                <div class="file-status">Processed</div>
+              </div>
+              <div class="file-item">
+                <div class="file-icon file-icon-xls">XLS</div>
+                <div>
+                  <div class="file-name">Arcadia_borrowing_base_cert.xlsx</div>
+                  <div class="file-meta">Received Mar 25 · 420 KB</div>
+                </div>
+                <div class="file-status">Processed</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Extract -->
+        <div class="flow-preview-panel" data-panel="extract">
+          <div class="mini-toolbar">
+            <span class="mini-toolbar-title">AI Extraction</span>
+            <div class="mini-toolbar-right">
+              <span class="mini-badge-green mini-badge">98.7% confidence</span>
+            </div>
+          </div>
+          <div class="extract-split">
+            <div class="extract-doc">
+              <span style="opacity:0.5">For the quarter ended March 31, 2025, Meridian Health Group reported consolidated revenue of $84.3M.</span><br><br>
+              <span class="src-highlight">Adjusted EBITDA of $11.2M represents a margin of 13.3%, up 40bps from Q4 2024.</span><br><br>
+              <span style="opacity:0.5">Total interest expense was $3.1M. Senior secured leverage stood at 4.7× on a trailing twelve-month basis.</span><br><br>
+              <span style="opacity:0.35">Capital expenditures totaled $1.8M, primarily related to facility upgrades.</span>
+            </div>
+            <div class="extract-fields">
+              <div class="extract-field">
+                <span class="extract-field-label">Company</span>
+                <span class="extract-field-value">Meridian Health</span>
+              </div>
+              <div class="extract-field">
+                <span class="extract-field-label">Period</span>
+                <span class="extract-field-value">Q1 2025</span>
+              </div>
+              <div class="extract-field">
+                <span class="extract-field-label">Revenue</span>
+                <span class="extract-field-value">$84.3M</span>
+              </div>
+              <div class="extract-field">
+                <span class="extract-field-label">EBITDA</span>
+                <span class="extract-field-value">$11.2M</span>
+              </div>
+              <div class="extract-field">
+                <span class="extract-field-label">EBITDA Margin</span>
+                <span class="extract-field-value">13.3%</span>
+              </div>
+              <div class="extract-field">
+                <span class="extract-field-label">Leverage</span>
+                <span class="extract-field-value">4.7×</span>
+              </div>
+              <div class="extract-field">
+                <span class="extract-field-label">Interest Expense</span>
+                <span class="extract-field-value">$3.1M</span>
+              </div>
+              <div class="extract-field">
+                <span class="extract-field-label">CapEx</span>
+                <span class="extract-field-value">$1.8M</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Review -->
+        <div class="flow-preview-panel" data-panel="review">
+          <div class="mini-toolbar">
+            <span class="mini-toolbar-title">Human QA Review</span>
+            <div class="mini-toolbar-right">
+              <span class="mini-badge">SLA: 48hr</span>
+              <span class="mini-badge-amber mini-badge">3 pending</span>
+            </div>
+          </div>
+          <div class="mini-body">
+            <div class="review-list">
+              <div class="review-item">
+                <div class="review-check done"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 6l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <div>
+                  <div class="review-label">Revenue matches source</div>
+                  <div class="review-label-sub">$84.3M — Meridian_Q1_2025_financials.pdf, p.2</div>
+                </div>
+                <span class="review-confidence">99.2%</span>
+              </div>
+              <div class="review-item">
+                <div class="review-check done"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 6l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <div>
+                  <div class="review-label">EBITDA verified</div>
+                  <div class="review-label-sub">$11.2M — margin 13.3%, up 40bps QoQ</div>
+                </div>
+                <span class="review-confidence">98.7%</span>
+              </div>
+              <div class="review-item">
+                <div class="review-check done"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 6l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <div>
+                  <div class="review-label">Leverage ratio confirmed</div>
+                  <div class="review-label-sub">4.7× — approaching 5.0× covenant threshold</div>
+                </div>
+                <span class="review-confidence">99.5%</span>
+              </div>
+              <div class="review-item">
+                <div class="review-check"></div>
+                <div>
+                  <div class="review-label">Interest expense cross-check</div>
+                  <div class="review-label-sub">$3.1M — pending verification against credit agreement</div>
+                </div>
+                <span class="review-confidence">94.1%</span>
+              </div>
+              <div class="review-item">
+                <div class="review-check"></div>
+                <div>
+                  <div class="review-label">CapEx classification</div>
+                  <div class="review-label-sub">$1.8M — confirm maintenance vs. growth allocation</div>
+                </div>
+                <span class="review-confidence">91.3%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Live -->
+        <div class="flow-preview-panel" data-panel="live">
+          <div class="mini-toolbar">
+            <span class="mini-toolbar-title">Portfolio Dashboard</span>
+            <div class="mini-toolbar-right">
+              <span class="mini-badge">Q1 2025</span>
+              <span class="mini-badge-green mini-badge">All current</span>
+            </div>
+          </div>
+          <div class="mini-body">
+            <div class="dash-grid">
+              <div class="dash-metric">
+                <div class="dash-metric-label">Portfolio EBITDA</div>
+                <div class="dash-metric-value">$66.5M</div>
+                <div class="dash-metric-delta dash-metric-up">+4.2% QoQ</div>
+              </div>
+              <div class="dash-metric">
+                <div class="dash-metric-label">Avg. Leverage</div>
+                <div class="dash-metric-value">3.97×</div>
+                <div class="dash-metric-delta dash-metric-down">+0.15× QoQ</div>
+              </div>
+              <div class="dash-metric">
+                <div class="dash-metric-label">Companies Reporting</div>
+                <div class="dash-metric-value">42/44</div>
+                <div class="dash-metric-delta dash-metric-up">95% on time</div>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:6px;">
+              <div class="dash-alert-row">
+                <div class="dash-alert-dot" style="background:#E24B4A;"></div>
+                Beacon Industrial — covenant breach, leverage 5.1× exceeds 4.5× max
+                <span class="dash-alert-time">2h ago</span>
+              </div>
+              <div class="dash-alert-row">
+                <div class="dash-alert-dot" style="background:#854F0B;"></div>
+                Meridian Health — leverage 4.7×, approaching 5.0× threshold
+                <span class="dash-alert-time">4h ago</span>
+              </div>
+              <div class="dash-alert-row">
+                <div class="dash-alert-dot" style="background:#3B6D11;"></div>
+                Stratos Capital — EBITDA up 15% QoQ, all metrics ahead of plan
+                <span class="dash-alert-time">6h ago</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -1592,71 +636,10 @@ a { text-decoration: none; color: inherit; }
   </div>
 </footer>
 
+<script src="js/main.js"></script>
 <script>
-// Nav scroll
-const nav = document.getElementById('nav');
-const navBackdrop = document.getElementById('navBackdrop');
-window.addEventListener('scroll', () => {
-  var scrolled = window.scrollY > 20;
-  nav.classList.toggle('scrolled', scrolled);
-  navBackdrop.classList.toggle('scrolled', scrolled);
-}, { passive: true });
-
-// Scroll reveals
-const revealObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
-      revealObserver.unobserve(entry.target);
-    }
-  });
-}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-
-document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
-
-// Staggered children
-const childObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      const parent = entry.target.closest('.features-grid, .quotes-grid');
-      if (parent) {
-        parent.querySelectorAll('.reveal-child').forEach((child, i) => {
-          setTimeout(() => child.classList.add('visible'), i * 80);
-        });
-      }
-      childObserver.unobserve(entry.target);
-    }
-  });
-}, { threshold: 0.08 });
-
-document.querySelectorAll('.reveal-child:first-child').forEach(el => childObserver.observe(el));
-
-// Problem cards settle animation
-const problemObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      const cards = entry.target.querySelectorAll('.pain-card');
-      cards.forEach((card, i) => {
-        setTimeout(() => card.classList.add('settled'), i * 120);
-      });
-      problemObserver.unobserve(entry.target);
-    }
-  });
-}, { threshold: 0.2 });
-
-const problemDesk = document.getElementById('problemDesk');
-if (problemDesk) problemObserver.observe(problemDesk);
-
-// FAQ
-function toggleFaq(btn) {
-  const answer = btn.nextElementSibling;
-  const chevron = btn.querySelector('.faq-chevron');
-  const isOpen = answer.classList.toggle('open');
-  chevron.style.transform = isOpen ? 'rotate(180deg)' : '';
-}
-
-// ── Hero Interactive Browser ──
-const companyData = {
+// ── Homepage-specific: Hero Interactive Browser ──
+var companyData = {
   arcadia: {
     name: 'Arcadia Logistics',
     steps: [
@@ -1837,42 +820,6 @@ var heroObserver = new IntersectionObserver(function(entries) {
 }, { threshold: 0.3 });
 
 heroObserver.observe(document.getElementById('heroBrowser'));
-
-// ── Theme Switcher (Light / Dark / System) ──
-var switcher = document.getElementById('themeSwitcher');
-var buttons = switcher.querySelectorAll('button');
-
-function applyTheme(mode) {
-  buttons.forEach(function(b) { b.classList.toggle('active', b.dataset.theme === mode); });
-  if (mode === 'system') {
-    localStorage.removeItem('lumonic-theme');
-    var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
-  } else if (mode === 'dark') {
-    document.documentElement.setAttribute('data-theme', 'dark');
-    localStorage.setItem('lumonic-theme', 'dark');
-  } else {
-    document.documentElement.removeAttribute('data-theme');
-    localStorage.setItem('lumonic-theme', 'light');
-  }
-}
-
-// Init
-var savedTheme = localStorage.getItem('lumonic-theme');
-if (savedTheme) {
-  applyTheme(savedTheme);
-} else {
-  applyTheme('light');
-}
-
-// Listen for system changes
-window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function() {
-  if (!localStorage.getItem('lumonic-theme')) applyTheme('system');
-});
-
-buttons.forEach(function(btn) {
-  btn.addEventListener('click', function() { applyTheme(btn.dataset.theme); });
-});
 </script>
 
 </body>
